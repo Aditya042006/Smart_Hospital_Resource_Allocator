@@ -89,11 +89,18 @@ if dashboard == "1. Admin / Reception Counter":
                 data = response.json()
 
                 if data.get("status") == "Success":
-                    st.success(
-                        f"✅ Patient {patient_id} admitted successfully! "
-                        f"Priority Assigned: {data.get('priority')} | "
-                        f"Remaining ICU Beds: {data.get('remaining_beds')}"
-                    )
+                    if data.get("priority") == 4:
+                        st.info(
+                            f"🏥 Patient {patient_id} routed to General Ward / OPD (Routine Case). "
+                            f"Priority Assigned: {data.get('priority')} | "
+                            f"ICU Beds Unchanged: {data.get('remaining_beds')}"
+                        )
+                    else:
+                        st.success(
+                            f"✅ Emergency Patient {patient_id} admitted to ICU! "
+                            f"Priority Assigned: {data.get('priority')} | "
+                            f"Remaining ICU Beds: {data.get('remaining_beds')}"
+                        )
                 elif data.get("status") == "Queued":
                     st.warning(
                         f"⚠️ System Unsafe (Banker's Algorithm). "
